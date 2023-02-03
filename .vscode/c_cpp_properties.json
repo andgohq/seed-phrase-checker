@@ -8,11 +8,11 @@
         {
             "name": "PlatformIO",
             "includePath": [
-                "c:/Users/nikir/OneDrive/Documents/PlatformIO/Projects/FactroyTest/include",
-                "c:/Users/nikir/OneDrive/Documents/PlatformIO/Projects/FactroyTest/src",
-                "c:/Users/nikir/OneDrive/Documents/PlatformIO/Projects/FactroyTest/.pio/libdeps/m5stack-fire/uBitcoin/src",
-                "c:/Users/nikir/OneDrive/Documents/PlatformIO/Projects/FactroyTest/.pio/libdeps/m5stack-fire/M5Stack/src",
-                "c:/Users/nikir/OneDrive/Documents/PlatformIO/Projects/FactroyTest/.pio/libdeps/m5stack-fire/M5EPD/src",
+                "c:/Users/nikir/OneDrive/Desktop/seed-phrase-checker/include",
+                "c:/Users/nikir/OneDrive/Desktop/seed-phrase-checker/src",
+                "c:/Users/nikir/OneDrive/Desktop/seed-phrase-checker/.pio/libdeps/m5stack-fire/uBitcoin/src",
+                "c:/Users/nikir/OneDrive/Desktop/seed-phrase-checker/.pio/libdeps/m5stack-fire/M5Stack/src",
+                "c:/Users/nikir/OneDrive/Desktop/seed-phrase-checker/.pio/libdeps/m5stack-fire/M5EPD/src",
                 "C:/Users/nikir/.platformio/packages/framework-arduinoespressif32@3.20004.0/libraries/SPIFFS/src",
                 "C:/Users/nikir/.platformio/packages/framework-arduinoespressif32@3.20004.0/libraries/SD/src",
                 "C:/Users/nikir/.platformio/packages/framework-arduinoespressif32@3.20004.0/libraries/SPI/src",
@@ -238,11 +238,11 @@
             "browse": {
                 "limitSymbolsToIncludedHeaders": true,
                 "path": [
-                    "c:/Users/nikir/OneDrive/Documents/PlatformIO/Projects/FactroyTest/include",
-                    "c:/Users/nikir/OneDrive/Documents/PlatformIO/Projects/FactroyTest/src",
-                    "c:/Users/nikir/OneDrive/Documents/PlatformIO/Projects/FactroyTest/.pio/libdeps/m5stack-fire/uBitcoin/src",
-                    "c:/Users/nikir/OneDrive/Documents/PlatformIO/Projects/FactroyTest/.pio/libdeps/m5stack-fire/M5Stack/src",
-                    "c:/Users/nikir/OneDrive/Documents/PlatformIO/Projects/FactroyTest/.pio/libdeps/m5stack-fire/M5EPD/src",
+                    "c:/Users/nikir/OneDrive/Desktop/seed-phrase-checker/include",
+                    "c:/Users/nikir/OneDrive/Desktop/seed-phrase-checker/src",
+                    "c:/Users/nikir/OneDrive/Desktop/seed-phrase-checker/.pio/libdeps/m5stack-fire/uBitcoin/src",
+                    "c:/Users/nikir/OneDrive/Desktop/seed-phrase-checker/.pio/libdeps/m5stack-fire/M5Stack/src",
+                    "c:/Users/nikir/OneDrive/Desktop/seed-phrase-checker/.pio/libdeps/m5stack-fire/M5EPD/src",
                     "C:/Users/nikir/.platformio/packages/framework-arduinoespressif32@3.20004.0/libraries/SPIFFS/src",
                     "C:/Users/nikir/.platformio/packages/framework-arduinoespressif32@3.20004.0/libraries/SD/src",
                     "C:/Users/nikir/.platformio/packages/framework-arduinoespressif32@3.20004.0/libraries/SPI/src",
