@@ -1,16 +1,8 @@
 #include "frame_main.h"
 #include "frame_keyboard.h"
-#include "frame_factorytest.h"
 
 enum {
-    kKeyFactoryTest = 0,
-    kKeySetting,
-    kKeyKeyboard,
-    kKeyWifiScan,
-    kKeySDFile,
-    kKeyCompare,
-    kKeyHome,
-    kKeyLifeGame
+    kKeyKeyboard = 0,
 };
 
 #define KEY_W 92
@@ -21,16 +13,6 @@ void key_keyboard_cb(epdgui_args_vector_t &args) {
     if (frame == NULL) {
         frame = new Frame_Keyboard(0);
         EPDGUI_AddFrame("Frame_Keyboard", frame);
-    }
-    EPDGUI_PushFrame(frame);
-    *((int *)(args[0])) = 0;
-}
-
-void key_factorytest_cb(epdgui_args_vector_t &args) {
-    Frame_Base *frame = EPDGUI_GetFrame("Frame_FactoryTest");
-    if (frame == NULL) {
-        frame = new Frame_FactoryTest();
-        EPDGUI_AddFrame("Frame_FactoryTest", frame);
     }
     EPDGUI_PushFrame(frame);
     *((int *)(args[0])) = 0;
@@ -66,16 +48,6 @@ Frame_Main::Frame_Main(void) : Frame_Base(false) {
                                 (void *)(&_is_run));
     _key[kKeyKeyboard]->Bind(EPDGUI_Button::EVENT_RELEASED, key_keyboard_cb);
 
-    _key[kKeyFactoryTest]->CanvasNormal()->pushImage(
-        0, 0, 92, 92, ImageResource_main_icon_factorytest_92x92);
-    *(_key[kKeyFactoryTest]->CanvasPressed()) =
-        *(_key[kKeyFactoryTest]->CanvasNormal());
-    _key[kKeyFactoryTest]->CanvasPressed()->ReverseColor();
-    _key[kKeyFactoryTest]->AddArgs(EPDGUI_Button::EVENT_RELEASED, 0,
-                                   (void *)(&_is_run));
-    _key[kKeyFactoryTest]->Bind(EPDGUI_Button::EVENT_RELEASED,
-                                key_factorytest_cb);
-
     _time             = 0;
     _next_update_time = 0;
 }
@@ -93,15 +65,8 @@ void Frame_Main::AppName(m5epd_update_mode_t mode) {
     _names->setTextSize(20);
     _names->fillCanvas(0);
     uint8_t language = GetLanguage();
-    if (language == LANGUAGE_JA) {
-        _names->drawString("工場テスト", 20 + 46, 16);
-        _names->drawString("鍵盤", 20 + 46 + 2 * 136, 16);
-    } else if (language == LANGUAGE_ZH) {
-        _names->drawString("出厂测试", 20 + 46, 16);
-        _names->drawString("键盘", 20 + 46 + 2 * 136, 16);
-    } else {
-        _names->drawString("Test", 20 + 46, 16);
-        _names->drawString("Keyboard", 20 + 46 + 2 * 136, 16);
+    if (language == LANGUAGE_EN) {
+        _names->drawString("Keyboard", 20 + 46, 16);
     }
     _names->pushCanvas(0, 186, mode);
 

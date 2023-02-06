@@ -3,7 +3,6 @@
 
 #include "frame_main.h"
 #include "frame_keyboard.h"
-#include "frame_factorytest.h"
 #include "frame_txtreader.h"
 #include "frame_pictureviewer.h"
 

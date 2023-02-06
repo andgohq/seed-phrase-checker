@@ -88,25 +88,7 @@ EPDGUI_Keyboard::EPDGUI_Keyboard(int16_t dir, uint32_t style) : EPDGUI_Base() {
             ImageResource_backspace_32x32);
         _btn[kKeyBackspace]->CanvasPressed()->ReverseColor();
 
-        if (language == LANGUAGE_JA) {
-            _btn[kKeySpace] = new EPDGUI_Button("空白", kBaseX + 162, k4thLineY,
-                                                468, kKeyHeight);
-            if (style & STYLE_INPUTMODE_NORMALTEXT)
-                _btn[kKeyWrap] = new EPDGUI_Button("改行", kBaseX + 792 - 152,
-                                                   k4thLineY, 152, kKeyHeight);
-            else if (style & STYLE_INPUTMODE_NEEDCONFIRM)
-                _btn[kKeyWrap] = new EPDGUI_Button("確認", kBaseX + 792 - 152,
-                                                   k4thLineY, 152, kKeyHeight);
-        } else if (language == LANGUAGE_ZH) {
-            _btn[kKeySpace] = new EPDGUI_Button("空格", kBaseX + 162, k4thLineY,
-                                                468, kKeyHeight);
-            if (style & STYLE_INPUTMODE_NORMALTEXT)
-                _btn[kKeyWrap] = new EPDGUI_Button("换行", kBaseX + 792 - 152,
-                                                   k4thLineY, 152, kKeyHeight);
-            else if (style & STYLE_INPUTMODE_NEEDCONFIRM)
-                _btn[kKeyWrap] = new EPDGUI_Button("确认", kBaseX + 792 - 152,
-                                                   k4thLineY, 152, kKeyHeight);
-        } else {
+        if (language == LANGUAGE_EN) {
             _btn[kKeySpace] = new EPDGUI_Button("Space", kBaseX + 162,
                                                 k4thLineY, 468, kKeyHeight);
             if (style & STYLE_INPUTMODE_NORMALTEXT)
@@ -166,25 +148,7 @@ EPDGUI_Keyboard::EPDGUI_Keyboard(int16_t dir, uint32_t style) : EPDGUI_Base() {
             ImageResource_backspace_32x32);
         _btn[kKeyBackspace]->CanvasPressed()->ReverseColor();
 
-        if (language == LANGUAGE_JA) {
-            _btn[kKeySpace] = new EPDGUI_Button("空白", kBaseX + 132, k4thLineY,
-                                                244, kKeyHeight);
-            if (style & STYLE_INPUTMODE_NORMALTEXT)
-                _btn[kKeyWrap] = new EPDGUI_Button("改行", kBaseX + 512 - 128,
-                                                   k4thLineY, 128, kKeyHeight);
-            else if (style & STYLE_INPUTMODE_NEEDCONFIRM)
-                _btn[kKeyWrap] = new EPDGUI_Button("確認", kBaseX + 512 - 128,
-                                                   k4thLineY, 128, kKeyHeight);
-        } else if (language == LANGUAGE_ZH) {
-            _btn[kKeySpace] = new EPDGUI_Button("空格", kBaseX + 132, k4thLineY,
-                                                244, kKeyHeight);
-            if (style & STYLE_INPUTMODE_NORMALTEXT)
-                _btn[kKeyWrap] = new EPDGUI_Button("换行", kBaseX + 512 - 128,
-                                                   k4thLineY, 128, kKeyHeight);
-            else if (style & STYLE_INPUTMODE_NEEDCONFIRM)
-                _btn[kKeyWrap] = new EPDGUI_Button("确认", kBaseX + 512 - 128,
-                                                   k4thLineY, 128, kKeyHeight);
-        } else {
+        if (language == LANGUAGE_EN) {
             _btn[kKeySpace] = new EPDGUI_Button("Space", kBaseX + 132,
                                                 k4thLineY, 244, kKeyHeight);
             if (style & STYLE_INPUTMODE_NORMALTEXT)
