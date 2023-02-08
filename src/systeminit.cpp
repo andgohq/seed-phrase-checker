@@ -130,24 +130,6 @@ void SysInit_Start(void) {
 
     Frame_Main *frame_main = new Frame_Main();
     EPDGUI_PushFrame(frame_main);
-    Frame_FactoryTest *frame_factorytest = new Frame_FactoryTest();
-    EPDGUI_AddFrame("Frame_FactoryTest", frame_factorytest);
-    if (!is_factory_test) {
-        Frame_Keyboard *frame_keyboard = new Frame_Keyboard(0);
-        EPDGUI_AddFrame("Frame_Keyboard", frame_keyboard);
-
-
-        if (isWiFiConfiged()) {
-            SysInit_UpdateInfo("Connect to " + GetWifiSSID() + "...");
-            WiFi.begin(GetWifiSSID().c_str(), GetWifiPassword().c_str());
-            uint32_t t = millis();
-            while (1) {
-                if (millis() - t > 8000) {
-                    break;
-                }
-            }
-        }
-    }
 
     log_d("done");
 
