@@ -36,10 +36,9 @@ const char keychar[] = {'q', 'w', 'e', 'r', 't', 'y', 'u', 'i', 'o', 'p',
                         'a', 's', 'd', 'f', 'g', 'h', 'j', 'k', 'l', '<',
                         'z', 'x', 'c', 'v', 'b', 'n', 'm', ' '};
 
-static M5EPD_Canvas canvas(&M5.EPD);
 Ticker ticker;
 
-void addKey(int x, int y, int c) {
+void addKey(M5EPD_Canvas &canvas, int x, int y, int c) {
   int size = c == 27 ? 2 : 1;
   int len = strlen(keytop[c]);
   canvas.setTextSize(textSize);
@@ -48,6 +47,8 @@ void addKey(int x, int y, int c) {
 }
 
 void drawKeyboard() {
+  M5EPD_Canvas canvas(&M5.EPD);
+
   canvas.createCanvas(960, (h + gy) * 3);
 
   int c = 0;
@@ -55,7 +56,7 @@ void drawKeyboard() {
     for (int i = 0; i < n[j]; i++) {
       int x = startx[j] + (w + gx) * i;
       int y = (h + gy) * j;
-      addKey(x, y, c);
+      addKey(canvas, x, y, c);
       c++;
     }
   }
@@ -68,20 +69,32 @@ static int r_c;
 static int r_x;
 static int r_y;
 
-static std::vector<redrawData> redrawList;
+static std::queue<redrawData> redrawList;
 
 void redrawKey() {
-  redrawData r = redrawList.pop();
-  Serial.println("redrawKey");
+  M5EPD_Canvas canvas(&M5.EPD);
 
-  canvas.createCanvas(w, h);
-  addKey(0, 0, r_c);
-  canvas.pushCanvas(r_x, starty + r_y, UPDATE_MODE_DU4);
-  canvas.deleteCanvas();
+  while (!redrawList.empty()) {
+    auto r = redrawList.front();
+    redrawList.pop();
+    Serial.print("redrawKey ");
+    Serial.print(" ");
+    Serial.print(keytop[r.c]);
+    Serial.print(" ");
+    Serial.println(redrawList.size());
+    canvas.createCanvas(w, h);
+    addKey(canvas, 0, 0, r.c);
+    canvas.pushCanvas(r.x, starty + r.y, UPDATE_MODE_DU4);
+    canvas.deleteCanvas();
+  }
+  Serial.print("redrawKey ");
+  Serial.println(redrawList.size());
 }
 
 char getKey() {
-  point prev[2];
+  M5EPD_Canvas canvas(&M5.EPD);
+
+  static point prev[2];
   static char oldKey;
 
   if (M5.TP.avaliable() && !M5.TP.isFingerUp()) {
@@ -113,9 +126,13 @@ char getKey() {
         canvas.fillRect(0, 0, w, h, 15);
         canvas.pushCanvas(x, starty + y, UPDATE_MODE_DU4);
         canvas.deleteCanvas();
-        ticker.once_ms(200, redrawKey);
+        // ticker.once_ms(200, redrawKey);
 
         redrawList.push({x, y, c});
+        Serial.print("getKey ");
+        Serial.print(keytop[c]);
+        Serial.print(" ");
+        Serial.println(redrawList.size());
 
         char key = keychar[c];
 

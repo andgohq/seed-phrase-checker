@@ -2,3 +2,4 @@
 
 void drawKeyboard();
 char getKey();
+void redrawKey();

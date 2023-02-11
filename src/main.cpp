@@ -32,12 +32,13 @@ void setup() {
 }
 
 void loop() {
-
   char c = getKey();
   if (c == '<') {
     Serial.println("backspace");
     textbox.deleteChar();
   } else if (c != 0) {
     textbox.addChar(c);
+  } else {
+    redrawKey();
   }
-}
+};
