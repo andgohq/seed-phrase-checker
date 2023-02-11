@@ -1,52 +1,33 @@
 #include "keyboard.hpp"
-#include <M5EPD.h>
-#include <Ticker.h>
-#include <queue>
 #include <string>
 
-constexpr int startx[] = {12, 30, 78};
-constexpr int starty = 300;
-constexpr int textSize = 3;
+static constexpr int startx[] = {12, 30, 78};
+static constexpr int starty = 300;
+static constexpr int textSize = 3;
 
-constexpr int n[] = {10, 10, 8};
-constexpr int w = 84;
-constexpr int h = 72;
-constexpr int gx = 6;
-constexpr int gy = 6;
-constexpr int cw = textSize * 6;
-constexpr int ch = textSize * 9;
+static constexpr int n[] = {10, 10, 8};
+static constexpr int w = 84;
+static constexpr int h = 72;
+static constexpr int gx = 6;
+static constexpr int gy = 6;
+static constexpr int cw = textSize * 6;
+static constexpr int ch = textSize * 9;
 
 typedef struct {
   int x;
   int y;
 } point;
 
-typedef struct {
-  int x;
-  int y;
-  int c;
-} redrawData;
+static const char keychar[] = {'q', 'w', 'e', 'r', 't', 'y', 'u', 'i', 'o', 'p',
+                               'a', 's', 'd', 'f', 'g', 'h', 'j', 'k', 'l', '<',
+                               'z', 'x', 'c', 'v', 'b', 'n', 'm', ' '};
 
-const char *keytop[] = {
+static const char *keytop[] = {
     "Q", "W", "E", "R", "T", "Y",  "U", "I", "O", "P", "A", "S", "D", "F",
     "G", "H", "J", "K", "L", "BS", "Z", "X", "C", "V", "B", "N", "M", "SPACE",
 };
 
-const char keychar[] = {'q', 'w', 'e', 'r', 't', 'y', 'u', 'i', 'o', 'p',
-                        'a', 's', 'd', 'f', 'g', 'h', 'j', 'k', 'l', '<',
-                        'z', 'x', 'c', 'v', 'b', 'n', 'm', ' '};
-
-Ticker ticker;
-
-void addKey(M5EPD_Canvas &canvas, int x, int y, int c) {
-  int size = c == 27 ? 2 : 1;
-  int len = strlen(keytop[c]);
-  canvas.setTextSize(textSize);
-  canvas.drawRect(x, y, w * size, h, 15);
-  canvas.drawString(keytop[c], x + (w * size - cw * len) / 2, y + (h - ch) / 2);
-}
-
-void drawKeyboard() {
+void Keyboard::drawKeyboard() {
   M5EPD_Canvas canvas(&M5.EPD);
 
   canvas.createCanvas(960, (h + gy) * 3);
@@ -65,13 +46,15 @@ void drawKeyboard() {
   canvas.deleteCanvas();
 }
 
-static int r_c;
-static int r_x;
-static int r_y;
+void Keyboard::addKey(M5EPD_Canvas &canvas, int x, int y, int c) {
+  int size = c == 27 ? 2 : 1;
+  int len = strlen(keytop[c]);
+  canvas.setTextSize(textSize);
+  canvas.drawRect(x, y, w * size, h, 15);
+  canvas.drawString(keytop[c], x + (w * size - cw * len) / 2, y + (h - ch) / 2);
+}
 
-static std::queue<redrawData> redrawList;
-
-void redrawKey() {
+void Keyboard::redrawKey() {
   M5EPD_Canvas canvas(&M5.EPD);
 
   while (!redrawList.empty()) {
@@ -91,7 +74,7 @@ void redrawKey() {
   Serial.println(redrawList.size());
 }
 
-char getKey() {
+char Keyboard::getKey() {
   M5EPD_Canvas canvas(&M5.EPD);
 
   static point prev[2];
@@ -126,7 +109,6 @@ char getKey() {
         canvas.fillRect(0, 0, w, h, 15);
         canvas.pushCanvas(x, starty + y, UPDATE_MODE_DU4);
         canvas.deleteCanvas();
-        // ticker.once_ms(200, redrawKey);
 
         redrawList.push({x, y, c});
         Serial.print("getKey ");
