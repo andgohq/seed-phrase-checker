@@ -1,6 +1,8 @@
-#include "keyboard.hpp"
-#include "textbox.hpp"
 #include <M5EPD.h>
+
+#include <checker.hpp>
+#include <keyboard.hpp>
+#include <textbox.hpp>
 
 M5EPD_Canvas canvas(&M5.EPD);
 Textbox textbox;
@@ -19,15 +21,25 @@ void setup() {
 
 void loop() {
   char c = keyboard.getKey();
-  if (c == '<') {
+  switch (c) {
+  case '\0':
+    keyboard.redrawKey();
+    break;
+
+  case '<':
     Serial.println("backspace");
     textbox.deleteChar();
-  } else if (c != 0) {
-    textbox.addChar(c);
-  } else {
-    keyboard.redrawKey();
-  }
+    break;
 
-  if (textbox.getWordCount() >= 24) {
+  case ' ':
+    textbox.addChar(c);
+    if (textbox.isWordCountUpdated())
+      if (checkLastWord(textbox.getText()))
+        Serial.println("ok");
+
+    break;
+
+  default:
+    textbox.addChar(c);
   }
 }
