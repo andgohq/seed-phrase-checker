@@ -88,3 +88,15 @@ bool Textbox::isWordCountUpdated() {
   }
   return false;
 }
+
+void Textbox::showMessage(std::string message) {
+  M5EPD_Canvas canvas(&M5.EPD);
+
+  canvas.createCanvas(W, CHAR_H * TEXT_SIZE);
+  canvas.setTextSize(TEXT_SIZE);
+  canvas.drawString(message.c_str(), 0, 0);
+  canvas.pushCanvas(X, Y + CHAR_H * TEXT_SIZE * 6, UPDATE_MODE_DU4);
+  canvas.deleteCanvas();
+}
+
+int Textbox::getWordCount() { return wordCount; }

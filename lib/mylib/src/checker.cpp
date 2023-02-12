@@ -6,23 +6,25 @@
 #include <checker.hpp>
 #include <wordlist.hpp>
 
-std::vector<std::string> split(std::string str, std::string separator) {
-  if (separator == "")
-    return {str};
-  std::vector<std::string> result;
-  std::string tstr = str + separator;
-  int l = tstr.length(), sl = separator.length();
-  std::string::size_type pos = 0, prev = 0;
-
-  for (; pos < l && (pos = tstr.find(separator, pos)) != std::string::npos;
-       prev = (pos += sl)) {
-    result.emplace_back(tstr, prev, pos - prev);
+std::vector<std::string> split(const std::string &str) {
+  std::vector<std::string> elems;
+  std::string item;
+  for (char ch : str) {
+    if (ch == ' ') {
+      if (!item.empty())
+        elems.push_back(item);
+      item.clear();
+    } else {
+      item += ch;
+    }
   }
-  return result;
+  if (!item.empty())
+    elems.push_back(item);
+  return elems;
 }
 
 int checkSeedPhrase(std::string str) {
-  auto words = split(str, " ");
+  auto words = split(str);
   std::vector<int> indexList;
 
   for (auto &word : words) {

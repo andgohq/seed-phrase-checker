@@ -33,8 +33,34 @@ void loop() {
 
   case ' ':
     textbox.addChar(c);
-    if (textbox.isWordCountUpdated()) {
-      checkSeedPhrase(textbox.getText())
+
+    if (!textbox.isWordCountUpdated())
+      break;
+
+    if (checkLastWord(textbox.getText()) == false) {
+      // textbox.showMessage("Last word is not in the BIP39 word list.");
+      textbox.showMessage(textbox.getText());
+    } else {
+      textbox.showMessage("");
+    }
+
+    if (textbox.getWordCount() < 24) {
+      return;
+    }
+
+    switch (checkSeedPhrase(textbox.getText())) {
+    case FAIL_WORD:
+      textbox.showMessage("Not in BIP39 word list.");
+      break;
+    case FAIL_CHECK_SUM:
+      textbox.showMessage("Checksum does not match.");
+      break;
+    case SUCCESS:
+      textbox.showMessage("Valid seed phrase.");
+      break;
+    default:
+      textbox.showMessage("Unkown error.");
+      break;
     }
 
     break;

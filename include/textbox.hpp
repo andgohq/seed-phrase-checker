@@ -26,4 +26,5 @@ public:
   void deleteChar();
   int getWordCount();
   bool isWordCountUpdated();
+  void showMessage(std::string message);
 };
