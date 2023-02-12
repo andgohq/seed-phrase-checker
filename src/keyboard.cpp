@@ -68,6 +68,15 @@ void Keyboard::redrawKey() {
 }
 
 char Keyboard::getKey() {
+  static int i = 0;
+  char ret = "void come effort suffer camp survey warrior heavy shoot "
+             "primary clutch crush open amazing screen patrol group "
+             "space point ten exist slush involve act <<<<unfold "[i];
+  if (ret != '\0') {
+    i++;
+    return ret;
+  }
+
   M5EPD_Canvas canvas(&M5.EPD);
 
   static point prev[2];
