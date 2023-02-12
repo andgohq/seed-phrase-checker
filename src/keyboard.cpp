@@ -118,10 +118,7 @@ char Keyboard::getKey() {
 
         char key = keychar[c];
 
-        // if (oldKey != key) {
-        //   oldKey = key;
-          return key;
-        // }
+        return key;
       }
     }
   }
