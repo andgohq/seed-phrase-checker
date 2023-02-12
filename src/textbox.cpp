@@ -42,7 +42,7 @@ void Textbox::addChar(char ch) {
   char str[2] = {ch, '_'};
   drawChar(str);
 
-  if (ch != ' ' && (text.length() == 0 || text.back() == ' ')) {
+  if (ch == ' ' && (text.length() > 0 && text.back() != ' ')) {
     incWordCount();
     Serial.print("word count ");
     Serial.println(wordCount);
@@ -61,7 +61,7 @@ void Textbox::deleteChar() {
   text.pop_back();
   cursor--;
 
-  if (ch != ' ' && (text.length() == 0 || text.back() == ' ')) {
+  if (ch == ' ' && (text.length() > 0 && text.back() != ' ')) {
     decWordCount();
     Serial.print("word count ");
     Serial.println(wordCount);

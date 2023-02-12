@@ -33,9 +33,9 @@ void loop() {
 
   case ' ':
     textbox.addChar(c);
-    if (textbox.isWordCountUpdated())
-      if (checkLastWord(textbox.getText()))
-        Serial.println("ok");
+    if (textbox.isWordCountUpdated()) {
+      checkSeedPhrase(textbox.getText())
+    }
 
     break;
 
