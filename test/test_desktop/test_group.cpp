@@ -15,7 +15,8 @@ void test_checkLastWord() {
   TEST_ASSERT_EQUAL(true, checkLastWord("act"));
   TEST_ASSERT_EQUAL(true, checkLastWord(" act"));
   TEST_ASSERT_EQUAL(true, checkLastWord("  act  "));
-  TEST_ASSERT_EQUAL(true, checkLastWord(" aaa act  "));
+  TEST_ASSERT_EQUAL(true, checkLastWord(" aaa void  "));
+  TEST_ASSERT_EQUAL(true, checkLastWord(" aaa void"));
   TEST_ASSERT_EQUAL(false, checkLastWord("actt"));
   TEST_ASSERT_EQUAL(false, checkLastWord(" actt"));
   TEST_ASSERT_EQUAL(false, checkLastWord(" actt "));
@@ -25,10 +26,10 @@ void test_checkLastWord() {
 void test_checkSeedPhrase() {
   //
   TEST_ASSERT_EQUAL(
-      SUCCESS,
-      checkSeedPhrase("void come effort suffer camp survey warrior heavy shoot "
-                      "primary clutch crush open amazing screen patrol group "
-                      "space point ten exist slush involve unfold"));
+      SUCCESS, checkSeedPhrase(
+                   " void come effort suffer camp survey warrior heavy shoot "
+                   "primary clutch crush  open amazing screen patrol group "
+                   "space point ten exist slush involve unfold "));
   TEST_ASSERT_EQUAL(
       FAIL_CHECK_SUM,
       checkSeedPhrase("act come effort suffer camp survey warrior heavy shoot "
