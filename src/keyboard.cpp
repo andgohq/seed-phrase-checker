@@ -60,18 +60,11 @@ void Keyboard::redrawKey() {
   while (!redrawList.empty()) {
     auto r = redrawList.front();
     redrawList.pop();
-    Serial.print("redrawKey ");
-    Serial.print(" ");
-    Serial.print(keytop[r.c]);
-    Serial.print(" ");
-    Serial.println(redrawList.size());
     canvas.createCanvas(w, h);
     addKey(canvas, 0, 0, r.c);
     canvas.pushCanvas(r.x, starty + r.y, UPDATE_MODE_DU4);
     canvas.deleteCanvas();
   }
-  Serial.print("redrawKey ");
-  Serial.println(redrawList.size());
 }
 
 char Keyboard::getKey() {
@@ -111,10 +104,6 @@ char Keyboard::getKey() {
         canvas.deleteCanvas();
 
         redrawList.push({x, y, c});
-        Serial.print("getKey ");
-        Serial.print(keytop[c]);
-        Serial.print(" ");
-        Serial.println(redrawList.size());
 
         char key = keychar[c];
 
