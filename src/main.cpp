@@ -27,4 +27,7 @@ void loop() {
   } else {
     keyboard.redrawKey();
   }
+
+  if (textbox.getWordCount() >= 24) {
+  }
 }

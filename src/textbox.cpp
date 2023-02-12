@@ -42,6 +42,12 @@ void Textbox::addChar(char ch) {
   char str[2] = {ch, '_'};
   drawChar(str);
 
+  if (ch != ' ' && (text.length() == 0 || text.back() == ' ')) {
+    incWordCount();
+    Serial.print("word count ");
+    Serial.println(wordCount);
+  }
+
   text.push_back(ch);
   cursor++;
 }
@@ -50,9 +56,35 @@ void Textbox::deleteChar() {
   if (cursor <= 0) {
     return;
   }
+
+  char ch = text.back();
   text.pop_back();
   cursor--;
 
+  if (ch != ' ' && (text.length() == 0 || text.back() == ' ')) {
+    decWordCount();
+    Serial.print("word count ");
+    Serial.println(wordCount);
+  }
+
   char str[2] = {'_', ' '};
   drawChar(str);
+}
+
+void Textbox::incWordCount() {
+  wordCount++;
+  updatedWordCount = true;
+}
+
+void Textbox::decWordCount() {
+  wordCount--;
+  updatedWordCount = true;
+}
+
+bool isWordCountUpdated() {
+  if (updatedWordCount == true) {
+    updatedWordCount = false;
+    return true;
+  }
+  return false
 }

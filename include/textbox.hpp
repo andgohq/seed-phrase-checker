@@ -12,12 +12,17 @@ constexpr int H = 228;
 
 class Textbox {
 private:
+  void drawChar(char *str);
+  void incWordCount();
+  void decWordCount();
   std::string text;
   int cursor = 0;
-  void drawChar(char *str);
+  int wordCount = 0;
+  updatedWordCount = false;
 
 public:
   std::string getText();
   void addChar(char ch);
   void deleteChar();
+  int getWordCount();
 };
