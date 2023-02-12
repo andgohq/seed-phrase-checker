@@ -1,6 +1,6 @@
-#include "textbox.hpp"
-
 #include <string>
+
+#include <textbox.hpp>
 
 std::string Textbox::getText() { return text; }
 
@@ -81,10 +81,10 @@ void Textbox::decWordCount() {
   updatedWordCount = true;
 }
 
-bool isWordCountUpdated() {
+bool Textbox::isWordCountUpdated() {
   if (updatedWordCount == true) {
     updatedWordCount = false;
     return true;
   }
-  return false
+  return false;
 }

@@ -18,11 +18,12 @@ private:
   std::string text;
   int cursor = 0;
   int wordCount = 0;
-  updatedWordCount = false;
+  bool updatedWordCount = false;
 
 public:
   std::string getText();
   void addChar(char ch);
   void deleteChar();
   int getWordCount();
+  bool isWordCountUpdated();
 };

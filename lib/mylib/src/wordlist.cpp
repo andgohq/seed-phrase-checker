@@ -1,4 +1,4 @@
-const char *wordlist[] = {
+const char *wordlist[2048] = {
     "abandon",  "ability",  "able",     "about",    "above",    "absent",
     "absorb",   "abstract", "absurd",   "abuse",    "access",   "accident",
     "account",  "accuse",   "achieve",  "acid",     "acoustic", "acquire",

@@ -2,7 +2,6 @@
 #include <M5EPD.h>
 #include <queue>
 
-
 typedef struct {
   int x;
   int y;
