@@ -2,6 +2,8 @@
 #include <M5EPD.h>
 #include <queue>
 
+#include <consts.hpp>
+
 typedef struct {
   int x;
   int y;
@@ -17,4 +19,5 @@ public:
   void drawKeyboard();
   char getKey();
   void redrawKey();
+  void drawCloseButton();
 };

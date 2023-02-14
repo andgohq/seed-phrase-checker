@@ -1,14 +1,7 @@
 #include <M5EPD.h>
 #include <string>
 
-constexpr int TEXT_SIZE = 4;
-constexpr int CHAR_W = 6;
-constexpr int CHAR_H = 9;
-constexpr int X = 48;
-constexpr int Y = 48;
-constexpr int W = 864;
-constexpr int H = 228;
-constexpr int MAX_SIZE = W / (CHAR_W * TEXT_SIZE) * 6;
+#include "consts.hpp"
 
 class Textbox {
 private:
@@ -28,4 +21,5 @@ public:
   int getWordCount();
   bool isWordCountUpdated();
   void showMessage(std::string message);
+  void wipe();
 };

@@ -1,3 +1,4 @@
+#include <cmath>
 #include <string>
 
 #include <textbox.hpp>
@@ -24,19 +25,18 @@ std::vector<std::string> Textbox::getWords() {
 void Textbox::drawChar(char *str) {
   M5EPD_Canvas canvas(&M5.EPD);
 
-  int cx = CHAR_W * TEXT_SIZE * cursor % (W - CHAR_W * TEXT_SIZE);
-  int cy = CHAR_W * TEXT_SIZE * cursor / (W - CHAR_W * TEXT_SIZE) * CHAR_H *
-           TEXT_SIZE;
+  int cx = CHAR_W * cursor % W;
+  int cy = CHAR_W * cursor / W * CHAR_H;
 
-  if (cx + 2 * CHAR_W * TEXT_SIZE < W) {
-    canvas.createCanvas(CHAR_W * TEXT_SIZE * 2, CHAR_H * TEXT_SIZE);
+  if (cx + 2 * CHAR_W < W) {
+    canvas.createCanvas(CHAR_W * 2, CHAR_H);
     canvas.setTextSize(TEXT_SIZE);
     canvas.drawString(str, 0, 0);
     canvas.pushCanvas(X + cx, Y + cy, UPDATE_MODE_DU4);
     canvas.deleteCanvas();
   } else {
     char buf1[] = {str[0], '\0'};
-    canvas.createCanvas(CHAR_W * TEXT_SIZE, CHAR_H * TEXT_SIZE);
+    canvas.createCanvas(CHAR_W, CHAR_H);
 
     canvas.setTextSize(TEXT_SIZE);
     canvas.drawString(buf1, 0, 0);
@@ -45,7 +45,7 @@ void Textbox::drawChar(char *str) {
     char buf2[] = {str[1], '\0'};
     canvas.setTextSize(TEXT_SIZE);
     canvas.drawString(buf2, 0, 0);
-    canvas.pushCanvas(X, Y + cy + CHAR_H * TEXT_SIZE, UPDATE_MODE_DU4);
+    canvas.pushCanvas(X, Y + cy + CHAR_H, UPDATE_MODE_DU4);
 
     canvas.deleteCanvas();
   }
@@ -105,11 +105,36 @@ bool Textbox::isWordCountUpdated() {
 void Textbox::showMessage(std::string message) {
   M5EPD_Canvas canvas(&M5.EPD);
 
-  canvas.createCanvas(W, CHAR_H * TEXT_SIZE);
+  canvas.createCanvas(W, CHAR_H);
   canvas.setTextSize(TEXT_SIZE);
   canvas.drawString(message.c_str(), 0, 0);
-  canvas.pushCanvas(X, Y + CHAR_H * TEXT_SIZE * 6, UPDATE_MODE_DU4);
+  canvas.pushCanvas(X, Y + CHAR_H * 6, UPDATE_MODE_DU4);
   canvas.deleteCanvas();
 }
 
 int Textbox::getWordCount() { return wordCount; }
+
+void Textbox::wipe() {
+  M5EPD_Canvas canvas(&M5.EPD);
+  canvas.createCanvas(W, CHAR_H * 7);
+
+  for (int j = 0; j < 5; j++) {
+    canvas.setTextSize(TEXT_SIZE);
+
+    text.clear();
+    for (int i = 0; i < MAX_SIZE; i++) {
+      text.append(1, 'a' + (char)((float)(rand()) / RAND_MAX * 25));
+    }
+    for (int i = 0; i < 6; i++) {
+      canvas.drawString(text.substr(i * (W / CHAR_W), W / CHAR_W).c_str(), 0,
+                        i * CHAR_H);
+    }
+
+    canvas.pushCanvas(X, Y, UPDATE_MODE_DU4);
+    canvas.clear();
+
+    delay(1);
+  }
+  M5.EPD.Clear(true);
+  canvas.deleteCanvas();
+}

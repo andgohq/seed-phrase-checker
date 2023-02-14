@@ -26,9 +26,14 @@ CheckResult checkSeedPhrase(const std::string &text) {
 }
 
 CheckResult checkSeedPhrase(const std::vector<std::string> &words) {
-  CheckResult result = {SUCCESS, 0};
+  CheckResult result = {0};
 
   std::vector<int> indexList;
+
+  if (words.size() == 0) {
+    result.errorCode = FAIL_EMPTY;
+    return result;
+  }
 
   // Check if each word is in wordlist
   int i = 0;
