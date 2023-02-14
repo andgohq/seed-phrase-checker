@@ -8,6 +8,8 @@ M5EPD_Canvas canvas(&M5.EPD);
 Textbox textbox;
 Keyboard keyboard;
 
+void checkLoop(void *);
+
 void setup() {
   M5.begin();
   M5.EPD.SetRotation(0);
@@ -17,9 +19,31 @@ void setup() {
   Serial.begin(115200);
 
   keyboard.drawKeyboard();
+
+  delay(1000);
+  // Priority: 5 / Core: 0
+  xTaskCreatePinnedToCore(checkLoop, "checkLoop", 8192, NULL, 1, NULL, 0);
 }
 
+int error;
+bool errorChanged = false;
+
+void checkLoop(void *param) {
+  int oldError;
+
+  while (1) {
+    error = checkSeedPhrase(textbox.getText());
+    if (oldError != error) {
+      oldError = error;
+      errorChanged = true;
+    }
+    delay(1);
+  }
+}
+
+// Priority: 1 / Core: 0
 void loop() {
+
   char c = keyboard.getKey();
   switch (c) {
   case '#':
@@ -28,32 +52,13 @@ void loop() {
     break;
 
   case '\0':
-    keyboard.redrawKey();
-    break;
+    // keyboard.redrawKey();
 
-  case '<':
-    Serial.println("backspace");
-    textbox.deleteChar();
-    break;
-
-  case ' ':
-    textbox.addChar(c);
-
-    if (!textbox.isWordCountUpdated())
+    if (errorChanged == false) {
       break;
-
-    if (checkLastWord(textbox.getText()) == false) {
-      // textbox.showMessage("Last word is not in the BIP39 word list.");
-      textbox.showMessage(textbox.getText());
-    } else {
-      textbox.showMessage("");
     }
 
-    if (textbox.getWordCount() < 24) {
-      return;
-    }
-
-    switch (checkSeedPhrase(textbox.getText())) {
+    switch (error) {
     case FAIL_WORD:
       textbox.showMessage("Not in BIP39 word list.");
       break;
@@ -67,6 +72,21 @@ void loop() {
       textbox.showMessage("Unkown error.");
       break;
     }
+
+    errorChanged = false;
+
+    break;
+
+  case '<':
+    Serial.println("backspace");
+    textbox.deleteChar();
+    break;
+
+  case ' ':
+    textbox.addChar(c);
+
+    if (!textbox.isWordCountUpdated())
+      break;
 
     break;
 
