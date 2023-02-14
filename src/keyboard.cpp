@@ -69,9 +69,11 @@ void Keyboard::redrawKey() {
 
 char Keyboard::getKey() {
   // static int i = 0;
-  // char ret = "void come effort suffer camp survey warrior heavy shoot "
-  //            "primary clutch crush open amazing screen patrol group "
-  //            "space point ten exist slush involve act #<<<<unfold "[i];
+  // char ret =
+  //     "##-v-o-i-d##- c-o-m-i-n-g##-<<<e###- effort suffer camp survey warrior
+  //     " "heavy " "shoot " "primary clutch crush open amazing screen patrol
+  //     group " "space point ten exist slush involve##- act##- "
+  //     "<<<<unfold###---####*#####y####"[i];
   // if (ret != '\0') {
   //   i++;
   //   return ret;

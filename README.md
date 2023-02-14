@@ -30,4 +30,4 @@ Install driver from http://docs.m5stack.com/en/quick_start/m5paper/arduino
    - BaudRate: 115200
    - Size: 4MB
    - File Path: any
-5. Select USER CUSTOM > Publish
+5. Select `USER CUSTOM > Publish`

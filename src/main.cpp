@@ -112,11 +112,8 @@ void modeNomal(bool entering) {
   case '*':
     modeToShutdown(true);
     break;
-  case '#':
-    // for demonstration
-    delay(1000);
-    break;
 
+  case '-':
   case '\0':
     keyboard.redrawKey();
 
@@ -168,6 +165,11 @@ void modeNomal(bool entering) {
 
     break;
 
+  case '#':
+    // for demonstration
+    delay(1000);
+    break;
+
   default:
     textbox.addChar(c);
   }
@@ -192,6 +194,13 @@ void modeToShutdown(bool entering) {
 
   case '\0':
     keyboard.redrawKey();
+    break;
+
+  case '#':
+    // for demonstration
+    delay(1000);
+    break;
+
   default:
     break;
   }
