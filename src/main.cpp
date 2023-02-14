@@ -22,6 +22,11 @@ void setup() {
 void loop() {
   char c = keyboard.getKey();
   switch (c) {
+  case '#':
+    // for demonstration
+    delay(1000);
+    break;
+
   case '\0':
     keyboard.redrawKey();
     break;
