@@ -4,6 +4,7 @@
 #include <sha2.h>
 
 #include <checker.hpp>
+#include <utility>
 #include <wordlist.hpp>
 
 std::vector<std::string> split(const std::string &str) {
@@ -20,27 +21,36 @@ std::vector<std::string> split(const std::string &str) {
   }
   if (!item.empty())
     elems.push_back(item);
-  return elems;
+  return std::move(elems);
 }
 
-int checkSeedPhrase(std::string str) {
+CheckResult checkSeedPhrase(const std::string &str) {
+  CheckResult result = {SUCCESS, 0};
+
   auto words = split(str);
   std::vector<int> indexList;
 
+  int i = 0;
   for (auto &word : words) {
-    int i = 0;
+    int idx = 0;
 
     for (auto &w : wordlist) {
       if (word.compare(w) == 0) {
         break;
       }
-      i++;
+      idx++;
     }
-    if (i == 2048)
-      return FAIL_WORD;
-    else {
-      indexList.push_back(i);
+    if (idx == 2048) {
+      result.wordsNotInList[i] = true;
+      result.errorCode = FAIL_WORD;
+    } else {
+      result.wordsNotInList[i] = false;
+      indexList.push_back(idx);
     }
+  }
+
+  if (result.errorCode == FAIL_WORD) {
+    return result;
   }
 
   uint8_t bytes[33];
@@ -48,10 +58,12 @@ int checkSeedPhrase(std::string str) {
   packToBytes(indexList, bytes, 33);
   sha256_Raw(bytes, 32, hash);
 
-  if (hash[0] == bytes[32])
-    return SUCCESS;
-  else
-    return FAIL_CHECK_SUM;
+  if (hash[0] == bytes[32]) {
+    return result;
+  } else {
+    result.errorCode = FAIL_CHECK_SUM;
+    return result;
+  }
 }
 
 bool checkLastWord(std::string str) {

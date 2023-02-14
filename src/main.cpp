@@ -1,7 +1,10 @@
+#include <sstream>
+
 #include <M5EPD.h>
 
 #include <checker.hpp>
 #include <keyboard.hpp>
+#include <sstream>
 #include <textbox.hpp>
 
 M5EPD_Canvas canvas(&M5.EPD);
@@ -25,24 +28,39 @@ void setup() {
   xTaskCreatePinnedToCore(checkLoop, "checkLoop", 8192, NULL, 1, NULL, 0);
 }
 
-int error;
+CheckResult result;
 bool errorChanged = false;
 
 void checkLoop(void *param) {
-  int oldError;
+  CheckResult oldResult;
 
   while (1) {
-    error = checkSeedPhrase(textbox.getText());
-    if (oldError != error) {
-      oldError = error;
+    delay(1); // for WDT reset
+
+    result = checkSeedPhrase(textbox.getText());
+
+    if (oldResult.errorCode != result.errorCode) {
       errorChanged = true;
+      oldResult = result;
+      continue;
     }
-    delay(1);
+
+    int i = 0;
+    for (auto notinlist : result.wordsNotInList) {
+      if (oldResult.wordsNotInList[i] != notinlist) {
+        errorChanged = true;
+        oldResult = result;
+        continue;
+      }
+      i++;
+    }
   }
 }
 
 // Priority: 1 / Core: 0
 void loop() {
+  std::string message = "";
+  std::ostringstream os;
 
   char c = keyboard.getKey();
   switch (c) {
@@ -58,20 +76,28 @@ void loop() {
       break;
     }
 
-    switch (error) {
+    switch (result.errorCode) {
     case FAIL_WORD:
-      textbox.showMessage("Not in BIP39 word list.");
+      for (int i = 0; i < 24; i++) {
+        if (result.wordsNotInList[i]) {
+          os << i + 1;
+        }
+      }
+      os << "Not in BIP39 word list.";
+      message = os.str();
       break;
     case FAIL_CHECK_SUM:
-      textbox.showMessage("Checksum does not match.");
+      message = "Checksum does not match.";
       break;
     case SUCCESS:
-      textbox.showMessage("Valid seed phrase.");
+      message = "Valid seed phrase.";
       break;
     default:
-      textbox.showMessage("Unkown error.");
+      message = "Unkown error.";
       break;
     }
+
+    textbox.showMessage(message);
 
     errorChanged = false;
 
