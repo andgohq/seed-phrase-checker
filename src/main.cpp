@@ -1,17 +1,20 @@
-#include <sstream>
+#include <string>
 
 #include <M5EPD.h>
 
 #include <checker.hpp>
+#include <consts.hpp>
 #include <keyboard.hpp>
 #include <textbox.hpp>
 
 M5EPD_Canvas canvas(&M5.EPD);
 Textbox textbox;
 Keyboard keyboard;
-enum Mode { NOMAL, TOSHUTDOWN, SHUTDOWN } mode = NOMAL;
+enum Mode { SPLASH, NOMAL, TOSHUTDOWN, SHUTDOWN } mode = SPLASH;
 
 void checkLoop(void *);
+
+void modeSplash(bool);
 void modeNomal(bool);
 void modeToShutdown(bool);
 void modeShutdown(bool);
@@ -24,13 +27,12 @@ void setup() {
 
   Serial.begin(115200);
 
-  keyboard.drawKeyboard();
-  keyboard.drawCloseButton();
-
   delay(1000);
 
   // Priority: 5 / Core: 0
   xTaskCreatePinnedToCore(checkLoop, "checkLoop", 8192, NULL, 1, NULL, 0);
+
+  modeSplash(true);
 }
 
 CheckResult result;
@@ -51,6 +53,9 @@ void checkLoop(void *param) {
 // Priority: 1 / Core: 0
 void loop() {
   switch (mode) {
+  case Mode::SPLASH:
+    modeSplash(false);
+    break;
   case Mode::NOMAL:
     modeNomal(false);
     break;
@@ -65,9 +70,39 @@ void loop() {
   }
 }
 
+void modeSplash(bool entering) {
+  if (entering) {
+    M5EPD_Canvas canvas(&M5.EPD);
+    mode = SPLASH;
+
+    std::string logo = "AndGo";
+    std::string blank = "     ";
+
+    canvas.createCanvas(CHAR_H * logo.size(), CHAR_H);
+
+    canvas.setTextSize(TEXT_SIZE);
+    canvas.drawString(logo.c_str(), 0, 0);
+    canvas.pushCanvas((SCREEN_W - CHAR_W * logo.size()) / 2,
+                      (SCREEN_H - CHAR_H) / 2, UPDATE_MODE_DU4);
+    delay(3000);
+    canvas.clear();
+
+    canvas.drawString(blank.c_str(), 0, 0);
+    canvas.pushCanvas((SCREEN_W - CHAR_W * logo.size()) / 2,
+                      (SCREEN_H - CHAR_H) / 2, UPDATE_MODE_DU4);
+
+    canvas.deleteCanvas();
+  }
+
+  modeNomal(true);
+}
+
 void modeNomal(bool entering) {
   if (entering) {
     mode = NOMAL;
+
+    keyboard.drawKeyboard();
+    keyboard.drawCloseButton();
   }
 
   std::string message = "";
