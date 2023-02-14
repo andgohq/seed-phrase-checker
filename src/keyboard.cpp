@@ -90,6 +90,7 @@ char Keyboard::getKey() {
         prev[id].x = p.x;
         prev[id].y = p.y;
 
+        // Check whieh key is pushed
         int j = (p.y - starty) / (h + gy);
         j = j < 0 ? 0 : j;
         j = j > 2 ? 2 : j;
@@ -107,14 +108,16 @@ char Keyboard::getKey() {
         int x = startx[j] + (w + gx) * i;
         int y = (h + gy) * j;
 
-        canvas.createCanvas(w, h);
-        canvas.fillRect(0, 0, w, h, 15);
+        char key = keychar[c];
+
+        int size = key = ' ' ? 2 : 1;
+
+        canvas.createCanvas(w * size, h);
+        canvas.fillRect(0, 0, w * size, h, 7);
         canvas.pushCanvas(x, starty + y, UPDATE_MODE_DU4);
         canvas.deleteCanvas();
 
         redrawList.push({x, y, c});
-
-        char key = keychar[c];
 
         return key;
       }
