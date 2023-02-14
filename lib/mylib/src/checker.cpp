@@ -7,29 +7,30 @@
 #include <utility>
 #include <wordlist.hpp>
 
-std::vector<std::string> split(const std::string &str) {
-  std::vector<std::string> elems;
+// only for unit test
+CheckResult checkSeedPhrase(const std::string &text) {
+  std::vector<std::string> words;
   std::string item;
-  for (char ch : str) {
+  for (char ch : text) {
     if (ch == ' ') {
       if (!item.empty())
-        elems.push_back(item);
+        words.push_back(item);
       item.clear();
     } else {
       item += ch;
     }
   }
   if (!item.empty())
-    elems.push_back(item);
-  return std::move(elems);
+    words.push_back(item);
+  return checkSeedPhrase(words);
 }
 
-CheckResult checkSeedPhrase(const std::string &str) {
+CheckResult checkSeedPhrase(const std::vector<std::string> &words) {
   CheckResult result = {SUCCESS, 0};
 
-  auto words = split(str);
   std::vector<int> indexList;
 
+  // Check if each word is in wordlist
   int i = 0;
   for (auto &word : words) {
     int idx = 0;
@@ -42,17 +43,20 @@ CheckResult checkSeedPhrase(const std::string &str) {
     }
     if (idx == 2048) {
       result.wordsNotInList[i] = true;
+      result.count++;
       result.errorCode = FAIL_WORD;
     } else {
       result.wordsNotInList[i] = false;
       indexList.push_back(idx);
     }
+    i++;
   }
 
   if (result.errorCode == FAIL_WORD) {
     return result;
   }
 
+  // Check hash
   uint8_t bytes[33];
   uint8_t hash[32];
   packToBytes(indexList, bytes, 33);

@@ -68,14 +68,14 @@ void Keyboard::redrawKey() {
 }
 
 char Keyboard::getKey() {
-  static int i = 0;
-  char ret = "void come effort suffer camp survey warrior heavy shoot "
-             "primary clutch crush open amazing screen patrol group "
-             "space point ten exist slush involve act #<<<<unfold "[i];
-  if (ret != '\0') {
-    i++;
-    return ret;
-  }
+  // static int i = 0;
+  // char ret = "void come effort suffer camp survey warrior heavy shoot "
+  //            "primary clutch crush open amazing screen patrol group "
+  //            "space point ten exist slush involve act #<<<<unfold "[i];
+  // if (ret != '\0') {
+  //   i++;
+  //   return ret;
+  // }
 
   M5EPD_Canvas canvas(&M5.EPD);
 
@@ -110,10 +110,10 @@ char Keyboard::getKey() {
 
         char key = keychar[c];
 
-        int size = key = ' ' ? 2 : 1;
+        int size = (key == ' ') ? 2 : 1;
 
         canvas.createCanvas(w * size, h);
-        canvas.fillRect(0, 0, w * size, h, 7);
+        canvas.fillRect(0, 0, w * size, h, 15);
         canvas.pushCanvas(x, starty + y, UPDATE_MODE_DU4);
         canvas.deleteCanvas();
 

@@ -29,17 +29,20 @@ void test_checkSeedPhrase() {
       SUCCESS, checkSeedPhrase(
                    " void come effort suffer camp survey warrior heavy shoot "
                    "primary clutch crush  open amazing screen patrol group "
-                   "space point ten exist slush involve unfold "));
+                   "space point ten exist slush involve unfold ")
+                   .errorCode);
   TEST_ASSERT_EQUAL(
       FAIL_CHECK_SUM,
       checkSeedPhrase("act come effort suffer camp survey warrior heavy shoot "
                       "primary clutch crush open amazing screen patrol group "
-                      "space point ten exist slush involve unfold"));
+                      "space point ten exist slush involve unfold")
+          .errorCode);
   TEST_ASSERT_EQUAL(
       FAIL_WORD,
       checkSeedPhrase("act come effort suffer camp survey warrior heavy shoot "
                       "primary clutch crush open amazing screen patrol group "
-                      "space point ten exist slush involve unfolding"));
+                      "space point ten exist slush involve unfolding")
+          .errorCode);
 }
 
 void test_packToBytes() {

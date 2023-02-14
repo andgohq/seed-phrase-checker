@@ -3,9 +3,11 @@
 typedef struct CheckResult {
   int errorCode;
   bool wordsNotInList[24];
+  int count;
 } CheckResult;
 
-CheckResult checkSeedPhrase(const std::string &str);
+CheckResult checkSeedPhrase(const std::string &text);
+CheckResult checkSeedPhrase(const std::vector<std::string> &words);
 bool checkLastWord(std::string str);
 void packToBytes(std::vector<int> indexList, uint8_t *bytes, size_t size);
 

@@ -4,7 +4,6 @@
 
 #include <checker.hpp>
 #include <keyboard.hpp>
-#include <sstream>
 #include <textbox.hpp>
 
 M5EPD_Canvas canvas(&M5.EPD);
@@ -35,32 +34,17 @@ void checkLoop(void *param) {
   CheckResult oldResult;
 
   while (1) {
-    delay(1); // for WDT reset
+    delay(1000); // for WDT reset
 
-    result = checkSeedPhrase(textbox.getText());
+    result = checkSeedPhrase(textbox.getWords());
 
-    if (oldResult.errorCode != result.errorCode) {
-      errorChanged = true;
-      oldResult = result;
-      continue;
-    }
-
-    int i = 0;
-    for (auto notinlist : result.wordsNotInList) {
-      if (oldResult.wordsNotInList[i] != notinlist) {
-        errorChanged = true;
-        oldResult = result;
-        continue;
-      }
-      i++;
-    }
+    errorChanged = true;
   }
 }
 
 // Priority: 1 / Core: 0
 void loop() {
   std::string message = "";
-  std::ostringstream os;
 
   char c = keyboard.getKey();
   switch (c) {
@@ -70,7 +54,7 @@ void loop() {
     break;
 
   case '\0':
-    // keyboard.redrawKey();
+    keyboard.redrawKey();
 
     if (errorChanged == false) {
       break;
@@ -80,11 +64,13 @@ void loop() {
     case FAIL_WORD:
       for (int i = 0; i < 24; i++) {
         if (result.wordsNotInList[i]) {
-          os << i + 1;
+          message += textbox.getWords()[i] + "/";
+          continue;
         }
       }
-      os << "Not in BIP39 word list.";
-      message = os.str();
+      message.pop_back();
+      message += result.count == 1 ? " is" : " are";
+      message += " not in wordlist.";
       break;
     case FAIL_CHECK_SUM:
       message = "Checksum does not match.";

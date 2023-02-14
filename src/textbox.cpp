@@ -4,6 +4,23 @@
 
 std::string Textbox::getText() { return text; }
 
+std::vector<std::string> Textbox::getWords() {
+  std::vector<std::string> elems;
+  std::string item;
+  for (char ch : text) {
+    if (ch == ' ') {
+      if (!item.empty())
+        elems.push_back(item);
+      item.clear();
+    } else {
+      item += ch;
+    }
+  }
+  if (!item.empty())
+    elems.push_back(item);
+  return std::move(elems);
+}
+
 void Textbox::drawChar(char *str) {
   M5EPD_Canvas canvas(&M5.EPD);
 
@@ -44,8 +61,6 @@ void Textbox::addChar(char ch) {
 
   if (ch == ' ' && (text.length() > 0 && text.back() != ' ')) {
     incWordCount();
-    Serial.print("word count ");
-    Serial.println(wordCount);
   }
 
   text.push_back(ch);
@@ -63,8 +78,6 @@ void Textbox::deleteChar() {
 
   if (ch == ' ' && (text.length() > 0 && text.back() != ' ')) {
     decWordCount();
-    Serial.print("word count ");
-    Serial.println(wordCount);
   }
 
   char str[2] = {'_', ' '};
