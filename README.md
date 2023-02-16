@@ -31,3 +31,8 @@ Install driver from http://docs.m5stack.com/en/quick_start/m5paper/arduino
    - Size: 4MB
    - File Path: any
 5. Select `USER CUSTOM > Publish`
+
+
+## Some parts of the source code come from external sources
+
+- lib/hash/src: https://github.com/trezor/trezor-firmware/tree/master/crypto
