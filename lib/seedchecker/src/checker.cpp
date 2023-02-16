@@ -30,7 +30,9 @@ CheckResult checkSeedPhrase(const std::vector<std::string> &words) {
 
   std::vector<int> indexList;
 
-  if (words.size() == 0) {
+  auto wordNum = words.size();
+
+  if (wordNum == 0) {
     result.errorCode = FAIL_EMPTY;
     return result;
   }
@@ -58,6 +60,13 @@ CheckResult checkSeedPhrase(const std::vector<std::string> &words) {
   }
 
   if (result.errorCode == FAIL_WORD) {
+    return result;
+  }
+
+  // Check word number
+  if (!(wordNum == 12 || wordNum == 15 || wordNum == 18 || wordNum == 21 ||
+        wordNum == 24)) {
+    result.errorCode = FAIL_WORD_NUMBER;
     return result;
   }
 

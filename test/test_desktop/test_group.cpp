@@ -43,6 +43,48 @@ void test_checkSeedPhrase() {
                       "primary clutch crush open amazing screen patrol group "
                       "space point ten exist slush involve unfolding")
           .errorCode);
+
+  TEST_ASSERT_EQUAL(
+      FAIL_WORD,
+      checkSeedPhrase("act come effort suffer camp survey warrior heavy shoot "
+                      "primary clutch crush open amazing screen patrol group "
+                      "space point ten exist slush involve unfolding")
+          .errorCode);
+
+  // invarid word numer
+  TEST_ASSERT_EQUAL(
+      FAIL_WORD_NUMBER,
+      checkSeedPhrase("act come effort suffer camp survey").errorCode);
+
+  TEST_ASSERT_EQUAL(
+      FAIL_WORD_NUMBER,
+      checkSeedPhrase("act come effort suffer camp survey warrior heavy shoot "
+                      "primary clutch crush open amazing screen patrol group "
+                      "space point ten exist slush involve")
+          .errorCode);
+
+  // valid 12 words
+  TEST_ASSERT_EQUAL(SUCCESS,
+                    checkSeedPhrase("legal winner thank year wave sausage "
+                                    "worth useful legal winner thank yellow")
+                        .errorCode);
+  // invalid 12 words
+  TEST_ASSERT_EQUAL(FAIL_CHECK_SUM,
+                    checkSeedPhrase("legal winner thank year wave sausage "
+                                    "worth useful legal winner yellow thank")
+                        .errorCode);
+  // valid 18 words
+  TEST_ASSERT_EQUAL(
+      SUCCESS,
+      checkSeedPhrase("legal winner thank year wave sausage worth useful legal "
+                      "winner thank year wave sausage worth useful legal will")
+          .errorCode);
+  // invalid 18 words
+  TEST_ASSERT_EQUAL(
+      FAIL_CHECK_SUM,
+      checkSeedPhrase("legal winner thank year wave sausage worth useful legal "
+                      "winner thank year wave sausage worth useful will legal")
+          .errorCode);
 }
 
 void test_packToBytes() {
