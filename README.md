@@ -35,4 +35,8 @@ Install driver from http://docs.m5stack.com/en/quick_start/m5paper/arduino
 
 ## Some parts of the source code come from external sources
 
+- PlatformIO IDE for VSCode: https://github.com/platformio/platformio-vscode-ide
+- M5Stack Library : https://github.com/m5stack/M5Stack
+- M5Paper Library: https://github.com/m5stack/M5EPD
 - lib/hash/src: https://github.com/trezor/trezor-firmware/tree/master/crypto
+- test/test_desktop/unity_*: https://github.com/ThrowTheSwitch/Unity
