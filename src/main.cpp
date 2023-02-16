@@ -136,6 +136,9 @@ void modeNomal(bool entering) {
       message += result.count == 1 ? " is" : " are";
       message += " not in wordlist.";
       break;
+    case FAIL_WORD_NUMBER:
+      message = "Input appropriate number of words.";
+      break;
     case FAIL_CHECK_SUM:
       message = "Checksum does not match.";
       break;

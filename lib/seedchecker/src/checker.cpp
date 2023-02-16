@@ -30,7 +30,9 @@ CheckResult checkSeedPhrase(const std::vector<std::string> &words) {
 
   std::vector<int> indexList;
 
-  if (words.size() == 0) {
+  auto wordNum = words.size();
+
+  if (wordNum == 0) {
     result.errorCode = FAIL_EMPTY;
     return result;
   }
@@ -61,13 +63,25 @@ CheckResult checkSeedPhrase(const std::vector<std::string> &words) {
     return result;
   }
 
+  // Check word number
+  if (!(wordNum == 12 || wordNum == 15 || wordNum == 18 || wordNum == 21 ||
+        wordNum == 24)) {
+    result.errorCode = FAIL_WORD_NUMBER;
+    return result;
+  }
+
   // Check hash
   uint8_t bytes[33];
   uint8_t hash[32];
-  packToBytes(indexList, bytes, 33);
-  sha256_Raw(bytes, 32, hash);
 
-  if (hash[0] == bytes[32]) {
+  auto entoropyBytes = wordNum * 11 / 33 * 4;
+  auto checksumBits = wordNum * 11 / 33;
+
+  packToBytes(indexList, bytes, 33);
+  sha256_Raw(bytes, entoropyBytes, hash);
+
+  if ((bytes[entoropyBytes] >> (8 - checksumBits)) ==
+      hash[0] >> (8 - checksumBits)) {
     return result;
   } else {
     result.errorCode = FAIL_CHECK_SUM;
